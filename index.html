@@ -1,1 +1,294 @@
-# WB7-Manual
+<!DOCTYPE HTML>
+<html>
+   <head>
+      <meta charset="utf-8">
+      <title>Z-Wave.Me Wiren Board 7</title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!--      <link rel="stylesheet" href="css/zniffer.css">-->
+      <script src="js/index.js" defer></script>
+      <link rel="stylesheet" href="css/style.css">
+<!--      <script src="js/zniffer.js" defer></script>-->
+   </head>
+   <body>
+      <aside class="side-menu open">
+         <nav>
+            <div class="side-menu-header">
+               <div class="close" onclick="toggleMenu()"></div>
+            </div>
+            <div>
+               <img src="pics/Z-Wave-Me.png" alt="">
+            </div>
+            <h3>Z-Wave.Me Wiren Board 7 Manual</h3>
+            <ul class="ChildLinks">
+               <li><a href="#ProductDescription">Product description</a></li>
+               <li><a href="#WhatIsZ-Wave">What is Z-Wave™ and Long Range?</a></li>
+               <li><a href="#KNXZ-WaveZigbee">KNX, Z-Wave, Zigbee</a></li>
+               <li><a href="#InstallationGuidelines">Installation Guidelines</a></li>
+               <li><a href="#OperatingTheDevice">Operating The Device</a>
+                  <ul>
+                     <li><a href="#SmartHomeUI">SmartHome UI</a></li>
+                     <li><a href="#ExpertUI">Expert UI</a></li>
+                     <li><a href="#WirenBoardUI">WirenBoard UI</a></li>
+                  </ul>
+               </li>
+               <li><a href="#MobileApp">Mobile App</a></li>
+               <li><a href="#TechnicalDetails">Technical Details</a></li>
+            </ul>
+         </nav>
+      </aside>
+      <header>
+         <div class="wrapper">
+            <div class="content">
+               <div class="menu">
+                  <div class="hide-when-open hamburger" onclick="toggleMenu()"></div>
+               </div>
+            </div>
+         </div>
+      </header>
+      <div class="wrapper wrapper-helper">
+         <div class="content">
+            <h1 id="ProductDescription">Product description</h1>
+            <p>ZMEEWB7-ZW-ZB</p>
+            <p>ZMEEWB7-ZW-ZB-KNX</p>
+            <center><img src="pics/WB7.png" width="80%"></center>
+            <p>WirenBoard 7 is a modular programmable controller for automation of apartments, houses and offices. The controller can work with wired and wireless sensors and actuators. Support for the Z-WaveTM and Zigbee wireless home automation protocols is provided by a special expansion board and Z-Way software by the Z-Wave.Me. The controller has passed Z-Wave certification, which guarantees compatibility with all certified Z-Wave devices.</p>
+            <p>The main advantages of the controller:</p>
+            <ul>
+               <li>open HTTP/JS/C API for interacting with devices</li>
+               <li>integration with iRidi visualization systems</li>
+               <li>mobile apps for iOS, Android</li>
+               <li>integration with other smart home systems, like HomeAssistant, OpenHAB, NodeRed, etc</li>
+               <li>voice assistants: Google Assistant, Amazon's Alexa, Apple's Siri</li>
+               <li>scripts allows you to implement flexible house management rules, create schedules, run scenarios</li>
+               <li>full information about the capabilities of devices, about routes in the network, convenient diagnostic tools for the Z-Wave network</li>
+               <li>secure remote access for management from anywhere in the world without using a static IP</li>
+            </ul>
+            <p>The WirenBoard 7 controller contains the 7th generation Z-Wave chip, which provides the following modern features:</p>
+            <ul>
+               <li>direct line of sight transmission distance of 1.6 km in Z-Wave Long Range mode</li>
+               <li>Smart Start for a trouble-free deployment of a big installation</li>
+               <li>high data transfer rate of 100 kb/sec allows you to transfer data faster, it saves battery power</li>
+               <li>the Z-Wave PlusTM v2 certification standard guarantees compatibility of devices from different manufacturers</li>
+               <li>mandatory for all devices, S2 encryption protects against listening to the radio</li>
+            </ul>
+            <p>The WirenBoard 7 also contains an EFR32MG21 chip, which provides communication with Zigbee and Thread.</p>
+
+            <h1 id="WhatIsZ-Wave">What is Z-Wave™ and Long Range?</h1>
+            <p>The Z-Wave protocol is an open, interoperable, sub-GHz wireless communications technology designed specifically for control, monitoring and status reading applications in residential and light commercial environments. Z-Wave has two operating modes Z-Wave MESH which is a very reliable sub-GHz MESH and Long Range (US only) which operates in a STAR topology offering over a mile range.</p>
+            <p>This product can be operated in any Z-Wave network with other Z-Wave certified devices from other manufacturers.</p>
+            <p><b>Note:</b> To add in Z-Wave Long Range mode, you can only use Smart Start.</p>
+
+            <h1 id="KNXZ-WaveZigbee">KNX, Z-Wave, Zigbee</h1>
+            <p>The controller supports simultaneous operation in wireless Z-Wave and Zigbee networks and wired KNX network. This allows you to combine different automation technologies and benefit from a large number of different devices available for your smart home project.</p>
+            <p><b>KNX</b> is designed for installation in large houses due to the reliability of the wired connection.</p>
+            <p><b>Z-Wave</b> allows retrofit installations as well as extending KNX installations with high-quality and functional devices.</p>
+            <p><b>Zigbee</b> opens the door to a broad range of inexpensive devices.</p>
+
+            <center><img src="pics/logos.png" width="100%"></center>
+
+            <h1 id="InstallationGuidelines">Installation Guidelines</h1>
+            <ul>
+               <li>Connect the ethernet cable to the connector Ethernet 1</li>
+               <li>Connect the 9–48V power supply to the terminals GND and V+</li>
+               <li>Turn on the switch on the lid</li>
+               <li>Wait for the controller to load, the indicator will flash green</li>
+               <li>Go to <a href="https://find.z-wave.me">https://find.z-wave.me</a> to find out the IP address of the controller in your local network</li>
+               <li>Also, you can view the IP address of the controller on the router</li>
+               <li>In local network go to the controller address http://IP:8083</li>
+               <li>When you first log in, set the administrator password and email</li>
+               <li>It is recommended to change the SSH access credentials</li>
+               <li>By default login: root, password: wirenboard. To change it connect via SSH, enter the passwd command and enter the new password twice</li>
+            </ul>
+
+            <div>
+               <img src="pics/find-en.png" width="45%" style="float: left; padding: 5px;">
+               <img src="pics/first-en.png" width="45%" style="padding: 5px;">
+            </div>
+
+            <h1 id="OperatingTheDevice">Operating The Device</h1>
+            <h3 id="SmartHomeUI">SmartHome UI</h3>
+            <center><img src="pics/smarthome-en.png" width="100%"></center>
+            <p><b>SmartHome UI</b> is the main web interface for working with Z-Wave devices. SmartHome UI is used to manage devices and configure home automation scenarios.</p>
+
+            <h3 id="ExpertUI">Expert UI</h3>
+            <center><img src="pics/expert-en.png" width="100%"></center>
+            <p><b>Expert UI</b> is designed for advanced setup of Z-Wave devices. Allows you to get complete information about the Z-Wave network, to diagnose and optimize.</p>
+
+            <h3 id="WirenBoardUI">WirenBoard UI</h3>
+            <center><img src="pics/wb-en.png" width="100%"></center>
+            <p><b>WirenBoard UI</b> is used to work with wired peripherals, manage system settings and configure hardware inputs/outputs.</p>
+
+            <h1 id="MobileApp">Z-Wave.Me Mobile App</h1>
+            <div>
+               <img src="pics/IMG_3963.PNG" width="30%" style="float: left; padding: 5px;">
+               <img src="pics/IMG_3964.PNG" width="30%" style="float: left; padding: 5px;">
+               <img src="pics/IMG_3965.PNG" width="30%" style="padding: 5px;">
+            </div>
+
+            <p><a href="hhttps://apps.apple.com/app/id1513858668">Download Z-Wave.Me mobile app on the App Store</a></p>
+            <p><a href="https://play.google.com/store/apps/details?id=me.zwave.zway">Get Z-Wave.Me mobile app on Google Play</a></p>
+
+            <h1 id="TechnicalDetails">Technical Details</h1>
+            <table border="1" class="wikitable" style="text-align:left">
+               <tbody>
+                  <tr>
+                     <th colspan="2"><b>General</b></th>
+                  </tr>
+                  <tr>
+                     <td style="width: 300px">CPU</td>
+                     <td>ARM Cortex A7 4 core 1.2 GHz</td>
+                  </tr>
+                  <tr>
+                     <td>RAM</td>
+                     <td>DDR3 RAM 2 GB</td>
+                  </tr>
+                  <tr>
+                     <td>FLASH</td>
+                     <td>64 GB TLC BiCS5</td>
+                  </tr>
+                  <tr>
+                     <th colspan="2"><b>Dimensions</b></th>
+                  </tr>
+                  <tr>
+                     <td>Width, DIN-units</td>
+                     <td>6</td>
+                  </tr>
+                  <tr>
+                     <td>Sizes (H x W х D)</td>
+                     <td>106 x 90 x 58 mm</td>
+                  </tr>
+                  <tr>
+                     <td>Weight (with box)</td>
+                     <td>235 g</td>
+                  </tr>
+                  <tr>
+                     <th colspan="2">Operating conditions</th>
+                  </tr>
+                  <tr>
+                     <td>Air temperature</td>
+                     <td>0 ... +75 °C</td>
+                  </tr>
+                  <tr>
+                     <td>Humidity</td>
+                     <td>Up to 92%, without condensation of moisture</td>
+                  </tr>
+                  <tr>
+                     <td>Warranty period</td>
+                     <td>2 years</td>
+                  </tr>
+                  <tr>
+                     <td>Service life</td>
+                     <td>5 years</td>
+                  </tr>
+                  <tr>
+                     <th colspan="2"><b>Interfaces</b></th>
+                  </tr>
+                  <tr>
+                     <td>KNX</td>
+                     <td>1 — only for ZMEEWB7-ZW-ZB-KNX</td>
+                  <tr>
+                     <td>RS-485</td>
+                     <td>2</td>
+                  </tr>
+                  <tr>
+                     <td>CAN</td>
+                     <td>1 — multiplexed with one of RS-485</td>
+                  </tr>
+                  <tr>
+                     <td>microSD slot up to 25 MB/s</td>
+                     <td>1</td>
+                  </tr>
+                  <tr>
+                     <td>Wx ports: 1-Wire interface/digital input</td>
+                     <td>2</td>
+                  </tr>
+                  <tr>
+                     <td>Ax ports: digital/analog input and output "open collector"</td>
+                     <td>3</td>
+                  </tr>
+                  <tr>
+                     <td>Port D1: digital input/output "open collector"</td>
+                     <td>1</td>
+                  </tr>
+                  <tr>
+                     <th colspan="2"><b>Communications</b></th>
+                  </tr>
+                  <tr>
+                     <td>Ethernet 10/100</td>
+                     <td>2 (the first of the ports with Passive PoE)</td>
+                  </tr>
+                  <tr>
+                     <td>USB Host (USB-A)</td>
+                     <td>1</td>
+                  </tr>
+                  <tr>
+                     <td>Debug Network (USB-C)</td>
+                     <td>USB network card for quick configuration of the controller. Important: When the port is connected to the computer, USB 1 is disconnected</td>
+                  </tr>
+                  <tr>
+                     <td>Wi-Fi 802.11n</td>
+                     <td>1 AP, client</td>
+                  </tr>
+                  <tr>
+                     <td>Bluetooth 4.0</td>
+                     <td>1</td>
+                  </tr>
+                  <tr>
+                     <td>Z-Wave</td>
+                     <td>700 Series Chip 868.42 MHz</td>
+                  </tr>
+                  <tr>
+                     <td>Zigbee</td>
+                     <td>MG21 Series Chip 2.4 GHz (can be converted to BLE or Thread, Matter ready)</td>
+                  </tr>
+                  <tr>
+                     <td>SIM-cards</td>
+                     <td>2 x SIM, one is online at the same time</td>
+                  </tr>
+                  <tr>
+                     <th colspan="2">Power</th>
+                  </tr>
+                  <tr>
+                     <td>Voltage</td>
+                     <td>9 - 48 V DC</td>
+                  </tr>
+                  <tr>
+                     <td>Power consumption</td>
+                     <td>3 W</td>
+                  </tr>
+                  <tr>
+                     <td>Power scheme</td>
+                     <td>from a high voltage input</td>
+                  </tr>
+                  <tr>
+                     <td>Power inputs</td>
+                     <td>2 on the terminals, 1 Passive PoE on the first Ethernet port</td>
+                  </tr>
+                  <tr>
+                     <th colspan="2"><b>Outputs for powering external devices</b></th>
+                  </tr>
+                  <tr>
+                     <td>Vout</td>
+                     <td>The power supply voltage of the controller is applied to the terminals, but with current limitation, program shutdown and state preservation when the controller is rebooted.</td>
+                  </tr>
+                  <tr>
+                     <td>5Vout</td>
+                     <td>5 V — with current limitation and software shutdown</td>
+                  </tr>
+                  <tr>
+                     <th colspan="2"><b>Modules</b></th>
+                  </tr>
+                  <tr>
+                     <td>Slots for internal expansion modules</td>
+                     <td>3 with terminals, 1 without terminals (two are occupied with Z-Wave and Zigbee modules, and one with KNX module)</td>
+                  </tr>
+                  <tr>
+                     <td>Other connectors</td>
+                     <td>For external Input/Output modules, for backup power module</td>
+                  </tr>
+               </tbody>
+            </table>
+         </div>
+      </div>
+   </body>
+</html>

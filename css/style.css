@@ -1,0 +1,269 @@
+:root {
+  --header-height: 2rem;
+  --submenu-wigth: 300px;
+  --max-width: 1240px;
+  --background-color: #FAFAFA;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Helvetica, Arial, Verdana, sans-serif;
+  margin: 0;
+  overflow-x: hidden;
+}
+
+img {
+  max-width: 100%;
+  display: block;
+}
+
+.side-menu {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: var(--submenu-wigth);
+  height: 100vh;
+  z-index: 3;
+  transition: all 0.3s ease-in-out;
+  transform: translateX(-100%);
+  background: var(--background-color);
+  border-right: 1px solid #e6e6e6;
+  box-sizing: border-box;
+  overflow-y: scroll;
+}
+.side-menu ::-webkit-scrollbar {
+  -webkit-appearance: none;
+}
+.side-menu-header {
+  height: 46px;
+}
+.side-menu.open {
+  transform: translateX(0);
+}
+@media screen and (min-width: 768px) {
+  .side-menu.open ~ .wrapper {
+    margin-left: max(var(--submenu-wigth), (100vw - var(--max-width)) / 2);
+  }
+}
+@media screen and (max-width: 768px) {
+  .side-menu.open {
+    box-shadow: #333333 0 5px 15px;
+  }
+}
+@media screen and (max-width: 768px) {
+  .side-menu {
+    box-shadow: #333333 0 5px 15px;
+  }
+  .side-menu.open ~ .wrapper {
+    overflow-y: hidden;
+    pointer-events: none;
+  }
+}
+.side-menu.open ~ header .hide-when-open {
+  display: none;
+}
+
+nav {
+  width: 100%;
+  padding: 0 20px;
+  box-sizing: border-box;
+}
+nav .active {
+  font-weight: 700 !important;
+}
+nav h2 {
+  font-size: 0.75em;
+  font-weight: 600;
+  text-transform: lowercase;
+  font-variant: small-caps;
+  color: #999;
+  padding-bottom: 0.5em;
+}
+nav ul {
+  border-top: 1px solid #e6e6e6;
+  font-weight: 400;
+  margin-bottom: 30px;
+  list-style: none;
+  padding-inline-start: 0;
+}
+nav ul ul {
+  list-style: none;
+}
+nav ul li {
+  border-bottom: 1px solid #e6e6e6;
+}
+nav ul li a:link {
+  color: #333;
+  text-decoration: none;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  font-size: 12px;
+  display: block;
+  padding: 10px;
+}
+nav ul li a:visited {
+  color: #333;
+}
+nav ul li a:hover {
+  color: #333;
+}
+nav ul li ul {
+  margin-bottom: 10px;
+  border-top: none;
+  padding-inline-start: 20px;
+}
+nav ul li ul li {
+  border-bottom: none;
+  padding: 0.1em;
+}
+nav ul li ul li.active {
+  border-bottom: none;
+}
+nav ul li ul li.active a {
+  font-weight: 700;
+}
+nav ul li ul a:link {
+  color: #333;
+  text-decoration: none;
+  text-transform: none;
+  letter-spacing: 0;
+  font-size: 12px;
+  display: block;
+  margin-left: 15px;
+  padding: 0 0 3px;
+  border-bottom: none;
+  font-weight: 300;
+}
+nav ul li ul a:hover {
+  text-decoration: underline;
+  color: #333;
+}
+
+header {
+  position: fixed;
+  width: 100%;
+  top: 0;
+  box-shadow: #999999 0 0 3px;
+  background-color: var(--background-color);
+  z-index: 2;
+  height: var(--header-height);
+}
+header .menu {
+  position: relative;
+  display: flex;
+  height: 100%;
+  align-items: center;
+}
+
+.wrapper {
+  margin: 0 max(0px, (100vw - var(--max-width)) / 2);
+  height: 100%;
+  transition: all 0.3s ease-in-out;
+  max-width: var(--max-width);
+}
+.wrapper-helper {
+  margin-top: calc(1rem + var(--header-height));
+}
+.wrapper .content {
+  width: 100%;
+  height: 100%;
+  padding: 0 1rem;
+}
+
+.close {
+  position: absolute;
+  right: 12px;
+  top: 12px;
+  width: 32px;
+  height: 32px;
+  opacity: 0.3;
+  cursor: pointer;
+}
+.close:hover {
+  opacity: 1;
+}
+.close:before, .close:after {
+  position: absolute;
+  left: 15px;
+  content: " ";
+  height: 33px;
+  width: 2px;
+  background-color: #333;
+}
+.close:before {
+  transform: rotate(45deg);
+}
+.close:after {
+  transform: rotate(-45deg);
+}
+
+.hamburger {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 15px;
+  width: 40px;
+  padding: 0.6rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.hamburger > div {
+  position: relative;
+  top: 0;
+  left: 0;
+  background: currentColor;
+  height: 2px;
+  width: 60%;
+  transition: all 0.4s ease;
+}
+
+.hamburger > div::before,
+.hamburger > div::after {
+  content: "";
+  position: absolute;
+  top: -7px;
+  background: currentColor;
+  width: 100%;
+  height: 2px;
+  transition: all 0.4s ease;
+}
+
+.hamburger > div::after {
+  top: 7px;
+}
+
+table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}
+
+th, td {
+  padding: 5px;
+}
+
+/* WirenBoard */
+.wikitable {
+    background-color: #f8f9fa;
+    color: #202122;
+    margin: 1em 0;
+    border: 1px solid #a2a9b1;
+    border-collapse:collapse
+}
+
+.wikitable > tr > th, .wikitable > tr > td, .wikitable > * > tr > th, .wikitable > * > tr > td {
+    border: 1px solid #a2a9b1;
+    padding:0.2em 0.4em
+}
+
+.wikitable > tr > th, .wikitable > * > tr > th {
+    background-color: #eaecf0;
+    text-align:center
+}
+
+.wikitable > caption {
+    font-weight:bold
+}
+
+/*# sourceMappingURL=style.css.map */
