@@ -32,6 +32,15 @@
                   </ul>
                </li>
                <li><a href="#MobileApp">Mobile App</a></li>
+               <li><a href="#ConnectingDevice">Connecting devices</a>
+                  <ul>
+                     <!--<li><a href="#ConnectingZWaveDevice">Connecting a Z-Wave device</a></li>-->
+                     <!--<li><a href="#ConnectingZigbeeDevice">Connecting a Zigbee device</a></li>-->
+                     <!--<li><a href="#ConnectingKNXDevice">Connecting a KNX device</a></li>-->
+                     <li><a href="#ConnectingModbusDevice">Connecting a Modbus device</a></li>
+                     <!--<li><a href="#ConnectingLoxone">Connecting to Loxone</a></li>-->
+                  </ul>
+               </li>
                <li><a href="#TechnicalDetails">Technical Details</a></li>
             </ul>
          </nav>
@@ -156,6 +165,331 @@
                   </tr>
                </tbody>
             </table>
+
+            <h1 id="ConnectingDevice">Connecting devices</h2>
+            
+            <h2 id="ConnectingModbusDevice">Connecting a Modbus device</h2>
+            <p>Configuration of Modbus devices is performed on the page Settings → Configs → Serial Device Driver Configuration.</p>
+            <p>To connect a Modbus device to the controller using Modbus RTU or Modbus TCP, a template is required. Many Modbus devices already has a template. Check the list of existing templates.</p>
+            <center><img src="pics/wb-mqtt-serial.png" width="80%"></center>
+            
+            <h3>Creating a template</h3>
+            <p>There are two ways to tell the wb-mqtt-serial driver, which works with Modbus devices in the controller:</p>
+            <ul>
+               <li>Add registers of your device directly in the controller web interface. This method is convenient for a quick test or if you need to connect such a device only once.</li>
+               <li>Create a template that describes device registers, their type and other parameters. This method is convenient for scaling: you simply copy the template to another controller and the device appears in the templates list.</p>
+            </ul>
+
+            <h3>Manually adding register in the UI</h3>
+            <p>To add registers of your device directly in the controller web interface, select the <i>Custom Modbus device</i> template and add channels as show on the picture below. Set the type for each channel, map it to a register and define the mapping formula. You can add more parameters by pressing the <i>Parameter</i> button. Read below about creating templates to understand better the meaning of each value.</p>
+            <center><img src="pics/wb-mqtt-serial-custom.png" width="60%"></center>
+            
+            <h3>Creating a template</h3>
+            <p>Here we'll look at creating a simple template. A simplified device template looks like this:</p>
+            <pre>
+            <code lang="json">
+{
+     "device_type": "my-relay", // device type - unique identifier
+     "title": "My Relay", // display title
+     "group": "g-relay", // group in which the template will be displayed, see below
+     "device": {
+         "name": "MY-RELAY", // device name, used in MQTT and in device ID in Z-Way
+         "id": "my-relay",
+         "groups": [ ], // groups of parameters and channels
+         "channels": [ ], // channels, available in scripts and on the Devices tab
+         "parameters": [ ], // parameters, can be changed in the device settings
+         "translations": { } // translations
+     }
+}
+            </code>
+            </pre>
+
+            <p><code>group</code> &mdash; Group of devices in the drop-down list in the serial port settings in the controller web interface. If not specified, the device will be displayed at the bottom of the list.</p>
+            <ul>
+               <li>g-adapter - protocol adapters</li>
+               <li>g-climate-sensor - climate sensors</li>
+               <li>g-level - level sensors</li>
+               <li>g-dimmer - dimmers</li>
+               <li>g-air-conditioning - air conditioners</li>
+               <li>g-climate-control - ventilation and climate controllers</li>
+               <li>g-refrigeration - refrigeration controllers</li>
+               <li>g-io - input/output modules</li>
+               <li>g-relay - relay modules</li>
+               <li>g-curtain - motors for curtains / electric curtain rods</li>
+               <li>g-control-panel - control panels</li>
+               <li>g-water-meter - water meters</li>
+               <li>g-heat-meter - heat meters</li>
+               <li>g-power-meter - electricity meters</li>
+               <li>g-thermostat - thermostats</li>
+               <li>g-motor-control - motor control (frequency converters)</li>
+               <li>g-custom - other devices</li>
+            </ul>
+
+            <p>Let's say we have a single-channel Modbus relay with a register table shown below.</p>
+            <table border="1" class="wikitable" style="text-align:left">
+               <tbody>
+                  <tr>
+                     <th>Address</th>
+                     <th>Type</th>
+                     <th>Title</th>
+                     <th>Purpose</th>
+                  </tr>
+                  <tr>
+                     <td>0</td>
+                     <td>Discrete Input</td>
+                     <td>Input 1</td>
+                     <td>Device input status</td>
+                  </tr>
+                  <tr>
+                     <td>1</td>
+                     <td>Input Register</td>
+                     <td>Input 1 Counter</td>
+                     <td>Input counter value</td>
+                  </tr>
+                  <tr>
+                     <td>3</td>
+                     <td>Coil</td>
+                     <td>Relay 1</td>
+                     <td>Output status and control</td>
+                  </tr>
+                  <tr>
+                     <td>10</td>
+                     <td>Holding</td>
+                     <td>Input Mode</td>
+                     <td>Selecting the mode of interaction between inputs and outputs</td>
+                  </tr>
+               </tbody>
+            </table>
+
+            <p>In this case, the template will look like this:</p>
+            <pre>
+            <code lang="json">
+{
+     "device_type": "my-relay",
+     "title": "My Relay",
+     "group": "g-relay",
+     "device": {
+         "name": "MY-RELAY",
+         "id": "my-relay",
+         "groups": [
+             {
+                 "title": "Channels",
+                 "id": "channels",
+                 "order": 0
+             },
+             {
+                 "title": "Settings",
+                 "id": "settings",
+                 "order": 1
+             }
+         ],
+         "channels": [
+             {
+                 "name": "Input 1",
+                 "reg_type": "discrete",
+                 "address": 1,
+                 "type": "switch",
+                 "group": "channels"
+             },
+             {
+                 "name": "Input 1 Counter",
+                 "reg_type": "input",
+                 "address": 2,
+                 "type": "value",
+                 "group": "channels"
+             },
+             {
+                 "name": "Relay 1",
+                 "reg_type": "coil",
+                 "address": 3,
+                 "type": "switch",
+                 "group": "channels"
+             }
+         ],
+         "parameters": [
+             {
+                 "id": "input1",
+                 "title": "Input Mode",
+                 "reg_type": "input",
+                 "address": 10,
+                 "format": "s8",
+                 "enum": [
+                     1,
+                     2
+                 ],
+                 "enum_titles": [
+                     "Switch Relay"
+                     "Not used"
+                 ],
+                 "default": 1
+             }
+         ],
+         "translations": {
+             "de": {
+                 "Channels": "Kanäle",
+                 "Settings": "Einstellungen",
+                 "Input 1": "Eingang 1",
+                 "Input 1 Counter": "Zähler von Eingang 1",
+                 "Relay 1": "Relais 1",
+                 "Input Mode": "Eingabemodus"
+             }
+         }
+     }
+}
+            </code>
+            </pre>
+
+            <h3>Loading template to controller</h3>
+            <p>When the template is ready, it needs to be loaded onto the controller:</p>
+            <ul>
+               <li>Save the template to a file, for example, <code>my-relay.json</code> and upload it to the controller in the folder <code>/etc/wb-mqtt-serial.conf.d/templates</code> using SSH copy.</li>
+               <li>
+                  Check the template for syntax errors with the command:
+                  <pre><code lang="bash">
+# wb-mqtt-serial -g
+<3>ERROR: [serial config] Failed to parse /etc/wb-mqtt-serial.conf.d/templates/my-relay.json
+Failed to parse JSON /etc/wb-mqtt-serial.conf.d/templates/my-best-template.json:* Line 12, Column 5
+   Missing ',' or '}' in object declaration
+                  </code></pre>
+                  in the example in the template ''my-best-template.json'' on line 12, character 5 is expected <code>,</code> or <code>}</code>, but something else is found.
+               </li>
+               <li>If everything is fine with the template, then go to the driver settings on the page Settings → Configs → Serial Device Driver Configuration and select your template.</li>
+            </ul>
+
+            <h3>Query optimization by the driver</h3>
+            <p>The Modbus RTU standard provides a mandatory silence interval of 3.5 characters between data frames (a character means a package consisting of a start bit, data bits, parity bit and stop bits).</p>
+
+            <p>To speed up the polling of devices, the driver respects this interval only before the first request to the next device in the polling cycle (the ''frame_timeout_ms' parameter in device templates).</p>
+
+            <p>Therefore, in order to comply with the requirements of the Modbus-RTU protocol, it is necessary to set the <code>guard_interval_us</code> parameter. This parameter specifies the delay before each request is written to the port.</p>
+
+            <p>The required value is calculated using the formula: <code>guard_interval_us = (3.5*11*106)/(rate in bit/s).</code></p>
+
+            <p>For example, for a speed of 9600 bps <code>guard_interval_us = (3.5*11*106)/9600 = 4000 µs</code>. If there are problems connecting a device, this value can be increased (for example, up to 100 000 μs).</p>
+
+            <h3>Possible problems with devices</h3>
+
+            <p>With some devices, a fairly common situation is when you have made a template, the communication works, but errors appear in the logs, and the device channels in the controller’s web interface are colored red.</p>
+
+            <p>The main reason for this is that the device processes requests from our driver too slowly. To begin with, we recommend connecting such devices to a separate bus so that they do not slow down the operation of normal devices, and then use the recommendations below.</p>
+
+            <p>To fix it, try increasing the <code>guard_interval_us</code> parameter up to thousands of units, for example, 5000. If the operation stabilizes, slowly reduce this value until errors appear again. The previous value when everything worked well will be your value in the template.</p>
+
+            <p>There is also a parameter <code>response_timeout_ms</code>, the maximum device response time in milliseconds, by default 500 ms. You can also experiment carefully with it.</p>
+
+            <p>Do not unnecessarily set huge values in these parameters, this will slow down the polling of devices on the port where the problematic device is connected.</p>
+
+            <p>Both parameters are written to the device section of the template:</p>
+
+            <pre>
+            <code lang="json">
+"device": {
+     "name": "BAC-6000ELNW",
+     "id": "bac-6000elnw",
+     "response_timeout_ms": 100,
+     "guard_interval_us": 5000,
+...
+}
+            </code>
+            </pre>
+
+            <h3>Different registers for reading status and control</h3>
+            <p>Sometimes devices allows reading from one register and writing to another one. To ensure that the driver works with such devices without errors, there is the <code>write_address</code> parameter.</p>
+
+            <p>Let's say our device has a write-only register:</p>
+
+            <table border="1" class="wikitable" style="text-align:left">
+               <tbody>
+                  <tr>
+                     <th>Address</th>
+                     <th>Type</th>
+                     <th>Title</th>
+                     <th>Purpose</th>
+                  </tr>
+                  <tr>
+                     <td>20</td>
+                     <td>Coil</td>
+                     <td>Relay 1 Switch</td>
+                     <td>Output control, write only</td>
+                  </tr>
+               </tbody>
+            </table>
+
+            <p>In this case, the channel should be described as follows:</p>
+
+            <pre>
+            <code lang="json">
+{
+     "name": "Relay 1 Switch",
+     "write_address": "20",
+     "reg_type": "coil",
+     "type": "pushbutton",
+     "format": "u16",
+     "group": "channels",
+     "on_value": 1 // defines what to write to the register when pressed
+}
+            </code>
+            </pre>
+
+            <p>Let's say that in our device a command is written to one register and read from another. This method can only be used if both registers are of the same type. If the types are different, create two different channels: for reading and for writing.<p>
+
+            <table border="1" class="wikitable" style="text-align:left">
+               <tbody>
+                  <tr>
+                     <th>Address</th>
+                     <th>Type</th>
+                     <th>Title</th>
+                     <th>Purpose</th>
+                  </tr>
+                  <tr>
+                     <td>20</td>
+                     <td>Coil</td>
+                     <td>Relay 1 Switch</td>
+                     <td>Output control, write-only</td>
+                  </tr>
+                  <tr>
+                     <td>21</td>
+                     <td>Coil</td>
+                     <td>Relay 1 State</td>
+                     <td>Output status, read-only</td>
+                  </tr>
+               </tbody>
+            </table>
+
+            <p>In this case, the channel should be described as follows: we will have one parameter in the controller, but when exchanging data, writing will be done from one register, and reading from another:</p>
+
+            <pre>
+            <code lang="json">
+{
+     "name": "Relay 1",
+     "write_address": "20", // address where we write commands
+     "address": "21", // address at which we read the status
+     "reg_type": "coil",
+     "type": "switch",
+     "format": "u16",
+     "group": "channels"
+}
+            </code>
+            </pre>
+
+            <h3>Arbitrary values in registers with binary logic</h3>
+            <p>Sometimes it happens that, according to the meaning of the register, it should be represented in the web interface by an ON/OFF switch, but its valid values are not 1/0. In this case, you define a regular channel with type <code>switch</code> and specify the values <code>on_value</code> and <code>off_value</code>, for example:</p>
+
+            <pre>
+            <code lang="json">
+{
+   "name": "Status",
+   "reg_type": "holding",
+   "address": "0",
+   "type": "switch",
+   "format": "u16",
+   "on_value": "0x00a5", // ON
+   "off_value": "0x005a" // OFF
+}
+            </code>
+            </pre>
+
+            <p>Now the driver will automatically convert the specified values to the switch position when reading, and write the specified values when the switch position changes.</p>
 
             <h1 id="TechnicalDetails">Technical Details</h1>
             <table border="1" class="wikitable" style="text-align:left">
